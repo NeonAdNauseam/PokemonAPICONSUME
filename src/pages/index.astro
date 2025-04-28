@@ -1,10 +1,11 @@
 ---
 // Import Stylesheet
+import { log } from 'astro/dist/core/logger/core';
 import '../styles/global.css';
 
 // data source
 // replace temporary JSON placeholder API
-const source = 'https://pokeapi.co/api/v2/pokemon/';
+const source = 'https://pokeapi.co/api/v2/pokemon/?limit=10';
 // fetch the data
 const res = await fetch(source); 
 // store retreived data
@@ -35,18 +36,8 @@ const data = await res.json();
 		  
 				<!-- Your API Data -->
 				{
-					data.map( pokemon =>
-					<li class="card-item">
-						<a href="#">
-							<figure class="card">
-							<img src="https://assets.codepen.io/16425/image-placeholder.png" alt="Placeholder">
-							<figcaption class="caption">
-								<h3 class="caption-title">{pokemon.name}</h3>
-								<p>{pokemon.company.catchPhrase}</p>
-							</figcaption>
-							</figure>
-						</a>
-					</li> 
+					data.results.map( pokeman =>
+					<h1>{pokeman.name}</h1>
 					)
 				}
 		  
