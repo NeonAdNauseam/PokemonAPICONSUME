@@ -1,50 +1,51 @@
 ---
-// Import Stylesheet
-import { log } from 'astro/dist/core/logger/core';
 import '../styles/global.css';
 
-// data source
-// replace temporary JSON placeholder API
-const source = 'https://pokeapi.co/api/v2/pokemon/?limit=1000';
-// fetch the data
-const res = await fetch(source); 
-// store retreived data
-const data = await res.json();
+const apiEndpointURL = 'https://pokeapi.co/api/v2/pokemon/?limit=493';
+
+const baseRes = await fetch(apiEndpointURL);
+const baseData = await baseRes.json();
+
+const pokemonList = await Promise.all(
+  baseData.results.map(async (mon) => {
+    const res = await fetch(mon.url);
+    const fullData = await res.json();
+    return {
+      name: fullData.name,
+      image: fullData.sprites.other['official-artwork'].front_default,
+      description: fullData.abilities.map(a => a.ability.name).join(', '),
+    };
+  })
+);
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-
-		<!-- Normalize CSS -->
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-
-		<title>Retreive and and display external API data with Astro</title>
-	</head>
-	<body>
-		
-		<header class="masthead">
-			<h1 class="site-title">Gallery</h1>
-		</header>
-
-		<main id="content" class="main-area">
-
-			<ul class="cards">
-		  
-				<!-- Your API Data -->
-				{
-					data.results.map( pokeman =>
-					<h1>{pokeman.name}</h1>
-					)
-				}
-		  
-			</ul>
-		  </main>
-		  
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
+    <title>Pokédex (Server Rendered)</title>
+  </head>
+  <body>
+    <header class="masthead">
+      <h1 class="site-title">Pokédex</h1>
+    </header>
 
 
-	</body>
+    <main class="main-area">
+      <div class="cards">
+        {
+          pokemonList.map(item => (
+            <div class="card-item">
+              <figure>
+                <img src={item.image} alt={item.name} />
+                {item.name}
+                <figcaption>{item.description}</figcaption>
+              </figure>
+            </div>
+          ))
+        }
+      </div>
+    </main>
+  </body>
 </html>
