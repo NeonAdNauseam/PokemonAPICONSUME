@@ -1,38 +1,34 @@
 ---
+import '../../styles/pokemon.css'; // ✅ Astro will include this in the build
+
 export async function getStaticPaths() {
-  // pull the first 493 Pokémon names (we only need the count)
   const res   = await fetch('https://pokeapi.co/api/v2/pokemon?limit=493');
   const data  = await res.json();
 
-  // Astro expects an array like [{ params: { id: '1' } }, …]
   return data.results.map((_, index) => ({
-    params: { id: String(index + 1) }   // 1‑based id
+    params: { id: String(index + 1) }
   }));
 }
 
 const { id } = Astro.params;
 
-// ---------- fetch the detail data ----------
 const pokeRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
 if (!pokeRes.ok) throw new Error(`Could not fetch Pokémon #${id}`);
 const poke = await pokeRes.json();
 
-// optional flavor text
 const speciesRes  = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
 const species     = await speciesRes.json();
 const flavorObj   = species.flavor_text_entries.find(e => e.language.name === 'en');
 const flavorText  = flavorObj ? flavorObj.flavor_text.replace(/\f/g, ' ') : 'No description yet.';
 ---
 
+
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>{poke.name} | Pokédex Entry</title>
-
-    <link rel="stylesheet" href="/src/styles/pokemon.css" />
-
-  </head>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>{poke.name} | Pokédex Entry</title>
+      </head>
 
   <body>
     <h1>{poke.name}</h1>
