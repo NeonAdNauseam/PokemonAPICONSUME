@@ -30,60 +30,8 @@ const flavorText  = flavorObj ? flavorObj.flavor_text.replace(/\f/g, ' ') : 'No 
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>{poke.name} | Pokédex Entry</title>
 
-    <style>
-      :root {
-        --accent: #3b4cca;
-        --bg:     #f5f5f5;
-        --text:   #222;
-      }
+    <link rel="stylesheet" href="/src/styles/pokemon.css" />
 
-      body {
-        background: var(--bg);
-        color:      var(--text);
-        font-family: system-ui, sans-serif;
-        margin: 0;
-        padding: 2rem;
-        max-width: 42rem;
-        margin-inline: auto;
-
-        h1 {
-          color: var(--accent);
-          text-transform: capitalize;
-          margin-top: 0;
-        }
-
-        img {
-          display: block;
-          width: 16rem;
-          margin: 1rem auto;
-        }
-
-        ul.types {
-          display: flex;
-          gap: .5rem;
-          list-style: none;
-          padding: 0;
-
-          li {
-            background: var(--accent);
-            color: #fff;
-            padding: .25rem .75rem;
-            border-radius: .5rem;
-            text-transform: capitalize;
-            font-size: .875rem;
-          }
-        }
-
-        .flavor { font-style: italic; margin-top: 1rem; }
-
-        a.back {
-          display: inline-block;
-          margin-top: 2rem;
-          color: var(--accent);
-          text-decoration: none;
-        }
-      }
-    </style>
   </head>
 
   <body>
