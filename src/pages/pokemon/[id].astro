@@ -1,20 +1,43 @@
 ---
-// src/pages/pokemon/[id].astro
+export async function getStaticPaths() {
+  const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=493');
+  const data = await res.json();
+
+  const paths = data.results.map((pokemon, index) => ({
+    params: { id: String(index + 1) }, // because index+1 = actual ID
+  }));
+
+  return { paths };
+}
+
 const { id } = Astro.params;
+
 const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
 const data = await res.json();
+
+// optional: grab species info for flavor text
+const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
+const speciesData = await speciesRes.json();
+const flavorEntry = speciesData.flavor_text_entries.find(entry => entry.language.name === 'en');
+const flavorText = flavorEntry ? flavorEntry.flavor_text.replace(/\f/g, ' ') : 'No description available.';
 ---
 
 <html lang="en">
   <head>
-    <title>{data.name} | Pokémon</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{data.name} | Pokédex Entry</title>
   </head>
   <body>
-    <h1>{data.name}</h1>
-    <img src={data.sprites.front_default} alt={data.name} />
-    <p>Base experience: {data.base_experience}</p>
-    <ul>
-      {data.types.map(type => <li>{type.type.name}</li>)}
-    </ul>
+    <h1 style="text-transform: capitalize;">{data.name}</h1>
+    <img
+      src={data.sprites.other['official-artwork'].front_default}
+      alt={data.name}
+      style="width: 300px; display: block; margin: 1rem auto;"
+    />
+    <p><strong>Base Experience:</strong> {data.base_experience}</p>
+    <p><strong>Types:</strong> {data.types.map(t => t.type.name).join(', ')}</p>
+    <p><strong>Description:</strong> {flavorText}</p>
+    <p><a href="/">← Back to Pokédex</a></p>
   </body>
 </html>

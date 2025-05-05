@@ -11,6 +11,7 @@ const pokemonList = await Promise.all(
     const res = await fetch(mon.url);
     const fullData = await res.json();
     return {
+      id: fullData.id, // ✅ This line fixes the "undefined" link issue
       name: fullData.name,
       image: fullData.sprites.other['official-artwork'].front_default,
       description: fullData.abilities.map(a => a.ability.name).join(', '),
@@ -31,7 +32,6 @@ const pokemonList = await Promise.all(
       <h1 class="site-title">Pokédex</h1>
     </header>
 
-
     <main class="main-area">
       <div class="cards">
         {
@@ -45,7 +45,6 @@ const pokemonList = await Promise.all(
           ))
         }
       </div>
-      
     </main>
   </body>
 </html>
