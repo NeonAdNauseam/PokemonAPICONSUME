@@ -1,43 +1,108 @@
 ---
 export async function getStaticPaths() {
-  const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=493');
-  const data = await res.json();
+  // pull the first 493 Pokémon names (we only need the count)
+  const res   = await fetch('https://pokeapi.co/api/v2/pokemon?limit=493');
+  const data  = await res.json();
 
-  const paths = data.results.map((pokemon, index) => ({
-    params: { id: String(index + 1) }, // because index+1 = actual ID
+  // Astro expects an array like [{ params: { id: '1' } }, …]
+  return data.results.map((_, index) => ({
+    params: { id: String(index + 1) }   // 1‑based id
   }));
-
-  return { paths };
 }
 
 const { id } = Astro.params;
 
-const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-const data = await res.json();
+// ---------- fetch the detail data ----------
+const pokeRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+if (!pokeRes.ok) throw new Error(`Could not fetch Pokémon #${id}`);
+const poke = await pokeRes.json();
 
-// optional: grab species info for flavor text
-const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
-const speciesData = await speciesRes.json();
-const flavorEntry = speciesData.flavor_text_entries.find(entry => entry.language.name === 'en');
-const flavorText = flavorEntry ? flavorEntry.flavor_text.replace(/\f/g, ' ') : 'No description available.';
+// optional flavor text
+const speciesRes  = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
+const species     = await speciesRes.json();
+const flavorObj   = species.flavor_text_entries.find(e => e.language.name === 'en');
+const flavorText  = flavorObj ? flavorObj.flavor_text.replace(/\f/g, ' ') : 'No description yet.';
 ---
 
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{data.name} | Pokédex Entry</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{poke.name} | Pokédex Entry</title>
+
+    <style>
+      :root {
+        --accent: #3b4cca;
+        --bg:     #f5f5f5;
+        --text:   #222;
+      }
+
+      body {
+        background: var(--bg);
+        color:      var(--text);
+        font-family: system-ui, sans-serif;
+        margin: 0;
+        padding: 2rem;
+        max-width: 42rem;
+        margin-inline: auto;
+
+        h1 {
+          color: var(--accent);
+          text-transform: capitalize;
+          margin-top: 0;
+        }
+
+        img {
+          display: block;
+          width: 16rem;
+          margin: 1rem auto;
+        }
+
+        ul.types {
+          display: flex;
+          gap: .5rem;
+          list-style: none;
+          padding: 0;
+
+          li {
+            background: var(--accent);
+            color: #fff;
+            padding: .25rem .75rem;
+            border-radius: .5rem;
+            text-transform: capitalize;
+            font-size: .875rem;
+          }
+        }
+
+        .flavor { font-style: italic; margin-top: 1rem; }
+
+        a.back {
+          display: inline-block;
+          margin-top: 2rem;
+          color: var(--accent);
+          text-decoration: none;
+        }
+      }
+    </style>
   </head>
+
   <body>
-    <h1 style="text-transform: capitalize;">{data.name}</h1>
+    <h1>{poke.name}</h1>
+
     <img
-      src={data.sprites.other['official-artwork'].front_default}
-      alt={data.name}
-      style="width: 300px; display: block; margin: 1rem auto;"
+      src={poke.sprites.other['official-artwork'].front_default}
+      alt={poke.name}
+      width="256"
+      height="256"
     />
-    <p><strong>Base Experience:</strong> {data.base_experience}</p>
-    <p><strong>Types:</strong> {data.types.map(t => t.type.name).join(', ')}</p>
-    <p><strong>Description:</strong> {flavorText}</p>
-    <p><a href="/">← Back to Pokédex</a></p>
+
+    <ul class="types">
+      {poke.types.map(t => <li>{t.type.name}</li>)}
+    </ul>
+
+    <p><strong>Base XP:</strong> {poke.base_experience}</p>
+    <p class="flavor">{flavorText}</p>
+
+    <a href="/" class="back">← Back to Pokédex</a>
   </body>
 </html>
