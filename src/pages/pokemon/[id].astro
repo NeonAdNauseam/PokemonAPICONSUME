@@ -1,0 +1,20 @@
+---
+// src/pages/pokemon/[id].astro
+const { id } = Astro.params;
+const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+const data = await res.json();
+---
+
+<html lang="en">
+  <head>
+    <title>{data.name} | Pokémon</title>
+  </head>
+  <body>
+    <h1>{data.name}</h1>
+    <img src={data.sprites.front_default} alt={data.name} />
+    <p>Base experience: {data.base_experience}</p>
+    <ul>
+      {data.types.map(type => <li>{type.type.name}</li>)}
+    </ul>
+  </body>
+</html>

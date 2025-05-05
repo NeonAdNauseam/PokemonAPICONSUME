@@ -35,17 +35,17 @@ const pokemonList = await Promise.all(
     <main class="main-area">
       <div class="cards">
         {
-          pokemonList.map(item => (
-            <div class="card-item">
+          pokemonList.map(pokemon => (
+            <a href={`/pokemon/${pokemon.id}`} class="card-item">
               <figure>
-                <img src={item.image} alt={item.name} />
-                {item.name}
-                <figcaption>{item.description}</figcaption>
+                <img src={pokemon.image} alt={pokemon.name} />
+                <figcaption>{pokemon.name}</figcaption>
               </figure>
-            </div>
+            </a>
           ))
         }
       </div>
+      
     </main>
   </body>
 </html>
