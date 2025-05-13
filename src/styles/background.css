@@ -1,0 +1,18 @@
+:root {
+  --bg-color: hsl(0, 6%, 13%);
+  --dot-color: hsl(0, 100%, 24%);
+
+}
+
+body {
+  background-color: var(--bg-color);
+  overflow: hidden;
+}
+
+#halftone-bg {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  display: block;
+}

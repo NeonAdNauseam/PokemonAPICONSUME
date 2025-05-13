@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Header from '../components/Header.astro'
+import Background from '../components/Background.astro';
 
 const apiEndpointURL = 'https://pokeapi.co/api/v2/pokemon/?limit=493';
 
@@ -19,7 +20,7 @@ const pokemonList = await Promise.all(
     };
   })
 );
----
+---a
 
 <html lang="en">
   <head>
@@ -29,6 +30,7 @@ const pokemonList = await Promise.all(
     <title>Pokédex (Server Rendered)</title>
   </head>
   <body>
+    <Background />
     <Header />
 
     <main class="main-area">

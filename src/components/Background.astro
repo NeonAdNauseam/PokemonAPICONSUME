@@ -1,0 +1,63 @@
+---
+import '../styles/background.css';
+---
+
+<svg id="halftone-bg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+  <g id="dots"></g>
+</svg>
+
+<script type="module" is:inline>
+const svg = document.getElementById('halftone-bg');
+let dotGroup = document.getElementById('dots');
+
+function drawDots() {
+  const tempGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+
+  const cols = 60;
+  const aspectRatio = window.innerHeight / window.innerWidth;
+  const rows = Math.round(cols * aspectRatio);
+
+  svg.setAttribute('viewBox', `0 0 ${cols} ${rows}`);
+
+  const getVar = name =>
+    parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name).trim());
+
+const minR = 0.1;
+const maxR = 0.8 * (Math.min(window.innerWidth, window.innerHeight) / 1000);
+
+  const dotColor = getComputedStyle(document.documentElement).getPropertyValue('--dot-color').trim();
+
+  for (let row = -1; row <= rows; row++) {
+    for (let col = -1; col <= cols; col++) {
+      const t = (cols - col - 1 + row) / (cols + rows - 2);
+      const radius = minR + (maxR - minR) * t;
+
+      const cx = col + 0.5;
+      const cy = row + 0.5;
+
+      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('cx', cx);
+      circle.setAttribute('cy', cy);
+      circle.setAttribute('r', radius);
+      circle.setAttribute('fill', dotColor);
+
+      tempGroup.appendChild(circle);
+    }
+  }
+
+  // Replace the old group when ready
+  dotGroup.replaceWith(tempGroup);
+  tempGroup.id = 'dots';
+  dotGroup = tempGroup;
+}
+
+drawDots();
+
+let resizeTimeout;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(drawDots, 200);
+});
+
+
+</script>

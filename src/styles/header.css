@@ -1,0 +1,27 @@
+:root {
+  --header-bg: #ffffff;
+  --header-border: #cbd5e1;
+  --header-text: #111827;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  background-color: var(--header-bg);
+  border-bottom: 0.125rem solid var(--header-border);
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+}
+
+.site-title {
+  margin: 0;
+  font-size: 1.75rem;
+  color: var(--header-text);
+  font-weight: bold;
+  font-family: var(--font-family-base, sans-serif);
+}

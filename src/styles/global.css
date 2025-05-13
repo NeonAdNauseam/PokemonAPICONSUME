@@ -1,3 +1,25 @@
+@font-face {
+  font-family: 'OriginTech';
+  src: url('/fonts/originTech.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Mojang';
+  src: url('/fonts/mojangBold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Mojang';
+  src: url('/fonts/mojangRegular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+
 :root {
     --bg-color: #f0f4f8;
     --card-bg-color: #ffffff;
@@ -6,20 +28,23 @@
     --text-strong-color: #222222;
     --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     --card-radius: 12px;
-    --font-family-base: 'Nunito', sans-serif;
     --card-max-width: 300px;
     --padding-base: 2em;
     --card-gap: 1.5em;
+    --header-height: 4.5rem;
+      --font-display: 'OriginTech', sans-serif;
+  --font-subheader: 'Mojang', sans-serif;
+  --font-body: 'Mojang', sans-serif;
   }
   
-  body {
-    background: var(--bg-color);
-    font-family: var(--font-family-base);
-    margin: 0;
-    padding: var(--padding-base);
-    display: flex;
-    justify-content: center;
-  }
+.main-area {
+  padding-top: var(--header-height, 4.5rem);
+  width: 100%;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding-inline: 1rem;
+}
+
   
   .cards {
     display: grid;
@@ -40,41 +65,56 @@
   }
   
   .card-item {
-    background: var(--card-bg-color);
-    border-radius: var(--card-radius);
-    box-shadow: var(--card-shadow);
-    padding: 1.5em;
-    max-width: var(--card-max-width);
-    width: 100%;
-    text-align: center;
-    transition: transform 0.2s ease;
-  
-    &:hover {
-      transform: translateY(-5px);
-    }
-  
-    figure {
-      margin: 0;
-    }
-  
-    img {
-      display: block;
-      margin: 0 auto 1em auto;
-      image-rendering: pixelated;
-      width: 100%;
-      height: auto;
-    }
-  
-    li {
-      list-style: none;
-      font-size: 1.4em;
-      color: var(--text-primary-color);
-      margin-bottom: 0.5em;
-    }
-  
-    figcaption {
-      font-size: 1em;
-      color: var(--text-secondary-color);
-    }
+    text-decoration: none;
+  background: var(--card-bg-color);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  padding: 1.5em;
+  max-width: var(--card-max-width);
+  width: 100%;
+  text-align: center;
+  transition: transform 0.2s ease;
+  font-family: var(--font-body);
+  font-weight: 400;
+
+  &:hover {
+    transform: translateY(-0.25em);
   }
-  
+
+  figure {
+    margin: 0;
+  }
+
+  img {
+    display: block;
+    margin: 0 auto 1em auto;
+    image-rendering: pixelated;
+    width: 100%;
+    height: auto;
+  }
+
+  figcaption {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-strong-color);
+    letter-spacing: 0.03em;
+    margin-bottom: 0.25em;
+    text-transform: capitalize;
+  }
+
+  .card-subtext {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: var(--text-secondary-color);
+    margin: 0;
+  }
+
+  li {
+    list-style: none;
+    font-size: 1rem;
+    color: var(--text-primary-color);
+    margin-bottom: 0.5em;
+  }
+}
