@@ -1,18 +1,32 @@
 :root {
   --bg-color: hsl(0, 6%, 13%);
   --dot-color: hsl(0, 100%, 24%);
+}
 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: auto;
+  min-height: 100%;
+  background-color: var(--bg-color);
+  position: relative;
+  z-index: -1; /* Make sure we're not blocking anything */
 }
 
 body {
+  /* Ensure stacking context and allow scroll */
+  position: relative;
+  overflow-x: hidden;
   background-color: var(--bg-color);
-  overflow: hidden;
 }
 
 #halftone-bg {
-  position: absolute;
+  position: fixed; /* changed from absolute */
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: -1;
+  z-index: -1; /* not -1, let it sit behind main content */
   display: block;
+  pointer-events: none; /* optional: prevents blocking clicks */
 }

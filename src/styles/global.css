@@ -21,21 +21,35 @@
 
 
 :root {
-    --bg-color: #f0f4f8;
-    --card-bg-color: #ffffff;
-    --text-primary-color: #333333;
-    --text-secondary-color: #555555;
-    --text-strong-color: #222222;
-    --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    --card-radius: 12px;
-    --card-max-width: 300px;
-    --padding-base: 2em;
-    --card-gap: 1.5em;
-    --header-height: 4.5rem;
-      --font-display: 'OriginTech', sans-serif;
+  --bg-color: #f0f4f8;
+  --card-bg-color: hsl(0, 100%, 35%);
+  --card-bg-accent: hsl(0, 100%, 25%);
+  --screen-bg: hsl(210, 40%, 85%);
+  --screen-border: hsl(210, 30%, 60%);
+  --text-primary-color: #333333;
+  --text-secondary-color: #e0e0e0;
+  --text-strong-color: #ffffff;
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --card-radius: 12px;
+  --card-max-width: 300px;
+  --padding-base: 2em;
+  --card-gap: clamp(1em, 4vw, 4em);
+  --header-height: 4.5rem;
+  --font-display: 'OriginTech', sans-serif;
   --font-subheader: 'Mojang', sans-serif;
   --font-body: 'Mojang', sans-serif;
-  }
+  --light-blue: hsl(220, 100%, 45%);
+  --light-green: hsl(140, 70%, 50%);
+}
+
+  html, body {
+  margin: 0;
+  padding: 0;
+  height: auto;
+  min-height: 100%;
+  background-color: var(--bg-color);
+}
+
   
 .main-area {
   padding-top: var(--header-height, 4.5rem);
@@ -64,57 +78,128 @@
     }
   }
   
+
+.card-wrapper {
+  transform: scale(0.95);
+  transform-origin: center;
+  box-shadow:
+    12px 16px 24px rgba(0, 0, 0, 0.6),
+    18px 28px 48px rgba(0, 0, 0, 0.5),
+    24px 36px 64px rgba(0, 0, 0, 0.4);
+  overflow: visible;
+  width: fit-content;
+  border-radius: 1.5rem;
+
   .card-item {
+    transform: scale(1.053);
+    transform-origin: center;
+    transition: transform 0.2s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: linear-gradient(to bottom right, var(--card-bg-color), var(--card-bg-accent));
+    border: none;
+    border-radius: 1.5rem;
+    padding: 2em 2em;
+    width: 18rem;
+    text-align: center;
     text-decoration: none;
-  background: var(--card-bg-color);
-  border-radius: var(--card-radius);
-  box-shadow: var(--card-shadow);
-  padding: 1.5em;
-  max-width: var(--card-max-width);
-  width: 100%;
-  text-align: center;
-  transition: transform 0.2s ease;
-  font-family: var(--font-body);
-  font-weight: 400;
+    color: white;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 1.5rem 100%, 0 calc(100% - 1.5rem));
 
-  &:hover {
-    transform: translateY(-0.25em);
-  }
+    &:hover {
+      transform: scale(1.053) translateY(-0.25em);
+    }
 
-  figure {
-    margin: 0;
-  }
+    .screen {
+      position: relative;
+      background: var(--screen-bg);
+      border-radius: 0.5rem;
+      padding: 0.5rem;
+      margin: 1rem 0 2em;
 
-  img {
-    display: block;
-    margin: 0 auto 1em auto;
-    image-rendering: pixelated;
-    width: 100%;
-    height: auto;
-  }
+      .screen-inner {
+        background: hsl(210, 30%, 75%);
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        margin: 0 auto;
 
-  figcaption {
-    font-family: var(--font-display);
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--text-strong-color);
-    letter-spacing: 0.03em;
-    margin-bottom: 0.25em;
-    text-transform: capitalize;
-  }
+        img {
+          display: block;
+          margin: 0 auto;
+          width: 100%;
+          image-rendering: pixelated;
+        }
+      }
 
-  .card-subtext {
-    font-family: var(--font-body);
-    font-size: 0.875rem;
-    line-height: 1.4;
-    color: var(--text-secondary-color);
-    margin: 0;
-  }
+      .dex-number {
+        position: absolute;
+        top: -2.2rem;
+        right: 0rem;
+        background: hsl(0, 0%, 15%);
+        color: hsl(0, 0%, 90%);
+        font-family: var(--font-subheader);
+        font-size: 0.875rem;
+        padding: 0.25em 0.6em;
+        border-radius: 0.5em;
+        box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.4);
+        letter-spacing: 0.05em;
+      }
+    }
 
-  li {
-    list-style: none;
-    font-size: 1rem;
-    color: var(--text-primary-color);
-    margin-bottom: 0.5em;
+    .caption-container {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      figcaption {
+        font-family: var(--font-display);
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: var(--text-strong-color);
+        text-shadow: 1px 1px 2px black;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        margin: 0;
+      }
+
+      .card-subtext {
+        font-size: 0.875rem;
+        line-height: 1.4;
+        color: var(--text-secondary-color);
+        font-style: italic;
+        margin: 0.25rem 0 0;
+      }
+    }
+
+    .pokedex-lights {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      .light {
+        border-radius: 50%;
+        box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.4);
+
+        &.blue {
+          background: var(--light-blue);
+          width: 1.75rem;
+          height: 1.75rem;
+        }
+
+        &.green {
+          background: var(--light-green);
+          width: 0.6rem;
+          height: 0.6rem;
+        }
+      }
+    }
   }
 }
+

@@ -13,18 +13,15 @@ let dotGroup = document.getElementById('dots');
 function drawDots() {
   const tempGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
 
-  const cols = 60;
+  const dotSize = 16; // px per column
+  const cols = Math.floor(window.innerWidth / dotSize);
   const aspectRatio = window.innerHeight / window.innerWidth;
   const rows = Math.round(cols * aspectRatio);
 
   svg.setAttribute('viewBox', `0 0 ${cols} ${rows}`);
 
-  const getVar = name =>
-    parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name).trim());
-
-const minR = 0.1;
-const maxR = 0.8 * (Math.min(window.innerWidth, window.innerHeight) / 1000);
-
+  const minR = 0.1;
+  const maxR = 0.8;
   const dotColor = getComputedStyle(document.documentElement).getPropertyValue('--dot-color').trim();
 
   for (let row = -1; row <= rows; row++) {
@@ -45,7 +42,6 @@ const maxR = 0.8 * (Math.min(window.innerWidth, window.innerHeight) / 1000);
     }
   }
 
-  // Replace the old group when ready
   dotGroup.replaceWith(tempGroup);
   tempGroup.id = 'dots';
   dotGroup = tempGroup;
