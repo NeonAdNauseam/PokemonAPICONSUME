@@ -1,6 +1,6 @@
 :root {
-  --bg-color: hsl(0, 6%, 13%);
-  --dot-color: hsl(0, 100%, 24%);
+  --bg-color: hsl(0, 0%, 100%);
+  --dot-color: hsl(0, 2.6%, 92.4%);
 }
 
 html, body {

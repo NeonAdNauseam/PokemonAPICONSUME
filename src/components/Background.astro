@@ -13,34 +13,47 @@ let dotGroup = document.getElementById('dots');
 function drawDots() {
   const tempGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
 
-  const dotSize = 16; // px per column
+  const dotSize = 28;
   const cols = Math.floor(window.innerWidth / dotSize);
   const aspectRatio = window.innerHeight / window.innerWidth;
   const rows = Math.round(cols * aspectRatio);
 
   svg.setAttribute('viewBox', `0 0 ${cols} ${rows}`);
 
-  const minR = 0.1;
-  const maxR = 0.8;
+ 
+const minR = 0.05;
+const maxR = 1.1;
   const dotColor = getComputedStyle(document.documentElement).getPropertyValue('--dot-color').trim();
 
-  for (let row = -1; row <= rows; row++) {
-    for (let col = -1; col <= cols; col++) {
-      const t = (cols - col - 1 + row) / (cols + rows - 2);
-      const radius = minR + (maxR - minR) * t;
+const maxDist = Math.sqrt(cols * cols + rows * rows);
 
-      const cx = col + 0.5;
-      const cy = row + 0.5;
+for (let row = -1; row <= rows; row++) {
+  for (let col = -1; col <= cols; col++) {
+const dx = (cols - col) / cols;
+const dy = row / rows;
+const dist = Math.sqrt(dx * dx + dy * dy);
+const t = dist / Math.sqrt(2); // √
 
-      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      circle.setAttribute('cx', cx);
-      circle.setAttribute('cy', cy);
-      circle.setAttribute('r', radius);
-      circle.setAttribute('fill', dotColor);
 
-      tempGroup.appendChild(circle);
-    }
+
+    const easedT = 1 - Math.pow(1 - t, .5); // quadratic ease-out
+
+const radius = minR + (maxR - minR) * easedT;
+
+
+    const cx = col + 0.5;
+    const cy = row + 0.5;
+
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('cx', cx);
+    circle.setAttribute('cy', cy);
+    circle.setAttribute('r', radius);
+    circle.setAttribute('fill', dotColor);
+
+    tempGroup.appendChild(circle);
   }
+}
+
 
   dotGroup.replaceWith(tempGroup);
   tempGroup.id = 'dots';

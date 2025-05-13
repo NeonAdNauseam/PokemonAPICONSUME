@@ -1,7 +1,7 @@
 :root {
-  --header-bg: #ffffff;
+  --header-bg: linear-gradient(to bottom right, hsl(0, 100%, 35%), hsl(0, 100%, 25%));
   --header-border: #cbd5e1;
-  --header-text: #111827;
+  --header-text: #ffffff;
 }
 
 .site-header {
@@ -9,19 +9,20 @@
   top: 0;
   z-index: 100;
   width: 100%;
-  background-color: var(--header-bg);
+  background: var(--header-bg);
   border-bottom: 0.125rem solid var(--header-border);
   height: var(--header-height);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 1rem 2rem;
 }
 
 .site-title {
   margin: 0;
-  font-size: 1.75rem;
+  font-size: 3rem;
   color: var(--header-text);
   font-weight: bold;
-  font-family: var(--font-family-base, sans-serif);
+  font-family: var(--font-display);
+  text-decoration: none;
 }

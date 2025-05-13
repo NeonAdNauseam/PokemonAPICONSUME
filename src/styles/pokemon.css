@@ -1,56 +1,245 @@
+@font-face {
+  font-family: 'OriginTech';
+  src: url('/fonts/originTech.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Mojang';
+  src: url('/fonts/mojangBold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Mojang';
+  src: url('/fonts/mojangRegular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
 :root {
-    --accent: #3b4cca;
-    --bg:     #f5f5f5;
-    --text:   #222;
-  }
-  
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: system-ui, sans-serif;
+  /* Layout & Container Sizing */
+  --radius: 1rem;
+  --shadow: 0 0.5rem 1rem hsla(0, 0%, 0%, 0.1);
+  --card-radius: var(--radius);
+  --card-shadow: var(--shadow);
+  --max-card-width: 45rem;
+  --card-max-width: 300px;
+  --img-size: 16rem;
+  --card-gap: clamp(1em, 4vw, 4em);
+  --padding-base: 2em;
+  --header-height: 4.5rem;
+
+  /* Color Theme */
+  --bg-color: linear-gradient(to bottom, hsl(220, 80%, 90%), hsl(200, 70%, 95%));
+  --card-bg-color: hsl(0, 100%, 35%);
+  --card-bg-accent: hsl(0, 100%, 25%);
+  --screen-bg: hsl(210, 40%, 85%);
+  --screen-border: hsl(210, 30%, 60%);
+  --stat-bg: hsl(212, 100%, 30%);
+  --type-bg: hsl(212, 100%, 30%);
+
+  /* Text Colors */
+  --text-color: hsl(0, 0%, 100%);
+  --text-primary-color: hsl(0, 0%, 100%);
+  --text-strong-color: hsl(0, 0%, 100%);
+  --text-secondary-color: hsl(0, 0%, 88%);
+  --label-color: hsl(0, 0%, 100%);
+  --type-color: hsl(212, 91%, 70%);
+
+  /* Typography */
+  --font-display: 'OriginTech', sans-serif;
+  --font-subheader: 'Mojang', sans-serif;
+  --font-body: 'Mojang', sans-serif;
+
+  /* Accent Colors */
+  --accent: hsl(0, 0%, 100%);
+  --light-blue: hsl(212, 91%, 70%);
+  --light-green: hsl(140, 70%, 50%);
+  --header-bg: linear-gradient(to right, var(--card-bg-color), var(--card-bg-accent));
+  --header-border: hsl(210, 30%, 80%);
+  --header-text: var(--text-strong-color);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  background: var(--bg-color);
+  color: var(--text-primary-color);
+  min-height: 100vh;
+}
+
+
+.main-area {
+  padding-top: var(--header-height);
+  padding-inline: 1rem;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 80rem;
+  margin: 0 auto;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100vw;
+  background: var(--header-bg);
+  border-bottom: 0.125rem solid var(--card-bg-accent);
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 2rem;
+  box-sizing: border-box;
+
+  .site-title {
     margin: 0;
-    padding: 2rem;
-    max-width: 42rem;
-    margin-inline: auto;
-  
-    h1 {
-      color: var(--accent);
-      text-transform: capitalize;
-      margin-top: 0;
+    font-size: 1.75rem;
+    color: var(--header-text);
+    font-weight: bold;
+    font-family: var(--font-display);
+    text-decoration: none;
+  }
+}
+
+.pokemon-card {
+  max-width: var(--max-card-width);
+  background: var(--card-bg-color);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  .card-content {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    align-items: flex-start;
+
+    @media (max-width: 45rem) {
+      flex-direction: column;
+      align-items: center;
     }
-  
-    img {
-      display: block;
-      width: 16rem;
-      margin: 1rem auto;
-    }
-  
-    ul.types {
+  }
+
+  .screen {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--screen-bg);
+    border: 0.25rem solid var(--screen-border);
+    border-radius: var(--radius);
+    padding: 1rem;
+
+    .screen-inner {
       display: flex;
-      gap: 0.5rem;
-      list-style: none;
-      padding: 0;
-  
-      li {
-        background: var(--accent);
-        color: #fff;
-        padding: 0.25rem 0.75rem;
-        border-radius: 0.5rem;
-        text-transform: capitalize;
-        font-size: 0.875rem;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        max-height: 100%;
+        height: auto;
+        max-width: 100%;
+        object-fit: contain;
+        display: block;
+        image-rendering: pixelated;
       }
     }
-  
+  }
+
+  figcaption {
+    flex: 1;
+    text-align: left;
+
+    h1 {
+      font-family: var(--font-display);
+      margin: 0.25em 0;
+      text-transform: capitalize;
+      font-size: 2rem;
+      color: var(--accent);
+    }
+
+    .types {
+      display: flex;
+      gap: 0.5rem;
+      padding: 0;
+      margin: 0.5rem 0;
+      list-style: none;
+
+      li {
+        background: var(--type-bg);
+        color: var(--text-color);
+        border-radius: 999px;
+        padding: 0.25rem 0.75rem;
+        text-transform: uppercase;
+        font-size: 1rem;
+        font-family: var(--font-body);
+      }
+    }
+
+    .label {
+      color: var(--label-color);
+      font-weight: bold;
+    }
+
     .flavor {
       font-style: italic;
-      margin-top: 1rem;
+      color: var(--text-secondary-color);
+      margin: 0.75rem 0;
+      font-family: var(--font-body);
     }
-  
-    a.back {
-      display: inline-block;
-      margin-top: 2rem;
-      color: var(--accent);
-      text-decoration: none;
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .stats {
+      background: var(--stat-bg);
+      padding: 1rem;
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+
+      h2 {
+        margin: 0 0 0.5rem;
+        font-size: 1.1rem;
+        border-bottom: 0.125rem solid var(--screen-border);
+        padding-bottom: 0.25rem;
+        font-family: var(--font-subheader);
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+
+        li {
+          margin: 0;
+          font-family: var(--font-body);
+        }
+      }
     }
   }
-  
+}
+
+a.back {
+  display: inline-block;
+  margin-top: 2rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: bold;
+  font-family: var(--font-subheader);
+}

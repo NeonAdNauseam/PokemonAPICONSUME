@@ -68,7 +68,7 @@
     margin: 0;
     list-style: none;
     justify-items: center;
-  
+    justify-content: center; 
     @media screen and (min-width: 30em) {
       grid-template-columns: repeat(2, 1fr);
     }

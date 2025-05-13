@@ -1,9 +1,12 @@
 ---
-import '../../styles/pokemon.css'; // ✅ Astro will include this in the build
+import Header from '../../components/Header.astro';
+import Background from '../../components/Background.astro';
+
+import '../../styles/pokemon.css';
 
 export async function getStaticPaths() {
-  const res   = await fetch('https://pokeapi.co/api/v2/pokemon?limit=493');
-  const data  = await res.json();
+  const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=493');
+  const data = await res.json();
 
   return data.results.map((_, index) => ({
     params: { id: String(index + 1) }
@@ -16,37 +19,68 @@ const pokeRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
 if (!pokeRes.ok) throw new Error(`Could not fetch Pokémon #${id}`);
 const poke = await pokeRes.json();
 
-const speciesRes  = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
-const species     = await speciesRes.json();
-const flavorObj   = species.flavor_text_entries.find(e => e.language.name === 'en');
-const flavorText  = flavorObj ? flavorObj.flavor_text.replace(/\f/g, ' ') : 'No description yet.';
+const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
+const species = await speciesRes.json();
+const flavorObj = species.flavor_text_entries.find(e => e.language.name === 'en');
+const flavorText = flavorObj ? flavorObj.flavor_text.replace(/\f/g, ' ') : 'No description yet.';
 ---
 
-
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <title>{poke.name} | Pokédex Entry</title>
-      </head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{poke.name} | Pokédex Entry</title>
+  </head>
 
   <body>
-    <h1>{poke.name}</h1>
+    <Background />
+    <Header />
 
-    <img
-      src={poke.sprites.other['official-artwork'].front_default}
-      alt={poke.name}
-      width="256"
-      height="256"
-    />
+<main class="main-area">
+  <figure class="pokemon-card">
+    <div class="card-content">
+      <div class="screen">
+        <div class="screen-inner">
+          <img
+            src={poke.sprites.other['official-artwork'].front_default}
+            alt={poke.name}
+            width="256"
+            height="256"
+          />
+        </div>
+      </div>
 
-    <ul class="types">
-      {poke.types.map(t => <li>{t.type.name}</li>)}
-    </ul>
+      <figcaption>
+        <h1>{poke.name}</h1>
 
-    <p><strong>Base XP:</strong> {poke.base_experience}</p>
-    <p class="flavor">{flavorText}</p>
+        <ul class="types">
+          {poke.types.map(t => <li>{t.type.name}</li>)}
+        </ul>
 
-    <a href="/" class="back">← Back to Pokédex</a>
+        <p class="flavor">{flavorText}</p>
+
+        <div class="info-grid">
+          <div><span class="label">Base XP:</span> {poke.base_experience}</div>
+          <div><span class="label">Height:</span> {poke.height / 10} m</div>
+          <div><span class="label">Weight:</span> {poke.weight / 10} kg</div>
+          <div>
+            <span class="label">Abilities:</span> {poke.abilities.map(a => a.ability.name).join(', ')}
+          </div>
+        </div>
+
+        <div class="stats">
+          <h2>Base Stats</h2>
+          <ul>
+            {poke.stats.map(stat => (
+              <li><span class="label">{stat.stat.name.replace('-', ' ')}:</span> {stat.base_stat}</li>
+            ))}
+          </ul>
+        </div>
+      </figcaption>
+    </div>
+  </figure>
+</main>
+
+
   </body>
 </html>
