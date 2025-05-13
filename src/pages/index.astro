@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Header from '../components/Header.astro'
 
 const apiEndpointURL = 'https://pokeapi.co/api/v2/pokemon/?limit=493';
 
@@ -28,9 +29,7 @@ const pokemonList = await Promise.all(
     <title>Pokédex (Server Rendered)</title>
   </head>
   <body>
-    <header class="masthead">
-      <h1 class="site-title">Pokédex</h1>
-    </header>
+    <Header />
 
     <main class="main-area">
       <div class="cards">
