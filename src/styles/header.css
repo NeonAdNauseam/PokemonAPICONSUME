@@ -26,3 +26,14 @@
   font-family: var(--font-display);
   text-decoration: none;
 }
+
+.site-title a {
+  color: var(--header-text);
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-weight: bold;
+}
+
+.site-title a:hover {
+  text-decoration: underline;
+}
